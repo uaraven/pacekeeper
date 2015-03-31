@@ -9,6 +9,12 @@
     "resources": {
         "media": [
             {
+                "file": "images/steps.png",
+                "menuIcon": true,
+                "name": "IMAGE_APP",
+                "type": "png"
+            },
+            {
                 "file": "images/other.png",
                 "name": "IMAGE_OTHER",
                 "type": "png"
