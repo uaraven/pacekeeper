@@ -1,0 +1,51 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "ovoronin@gmail.com",
+    "longName": "PaceKeeper",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/other.png",
+                "name": "IMAGE_OTHER",
+                "type": "png"
+            },
+            {
+                "file": "images/main.png",
+                "name": "IMAGE_MAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/pause.png",
+                "name": "IMAGE_ACTION_ICON_STOP",
+                "type": "png"
+            },
+            {
+                "file": "images/play.png",
+                "name": "IMAGE_ACTION_ICON_RUN",
+                "type": "png"
+            },
+            {
+                "file": "images/action_icon_minus.png",
+                "name": "IMAGE_ACTION_ICON_MINUS",
+                "type": "png"
+            },
+            {
+                "file": "images/action_icon_plus.png",
+                "name": "IMAGE_ACTION_ICON_PLUS",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "PaceKeeper",
+    "uuid": "7b187de2-4f13-47fa-af34-dd70843cdb41",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
