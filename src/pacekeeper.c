@@ -27,13 +27,13 @@ static bool s_running = false;
 static bool s_main_leg = true; // longer buzz for main leg, shorter for other leg
 
 static void update_text() {
-  static char s_text[5];
-  static char s_double[10];
+  static char s_text[6];
+  static char s_double[6];
 	
-  snprintf(s_text, sizeof(s_text), "%03d", s_pace);
+  snprintf(s_text, sizeof(s_text), "%03d", s_pace*2);
   text_layer_set_text(s_body_layer, s_text);
 	
-  snprintf(s_double, sizeof(s_double), "%03d", s_pace*2);
+  snprintf(s_double, sizeof(s_double), "%03d", s_pace);
   text_layer_set_text(s_double_layer, s_double);
 }
 
@@ -138,7 +138,7 @@ static void main_window_load(Window *window) {
   s_header_layer = text_layer_create(GRect(4, 0, width, 30));
   text_layer_set_font(s_header_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
   text_layer_set_background_color(s_header_layer, GColorClear);
-  text_layer_set_text(s_header_layer, "Steps/minute");
+  text_layer_set_text(s_header_layer, "Strides/minute");
   text_layer_set_text_alignment(s_header_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_header_layer));
 
