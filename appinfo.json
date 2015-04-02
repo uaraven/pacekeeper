@@ -9,28 +9,9 @@
     "resources": {
         "media": [
             {
-                "file": "images/action_icon_plus.png",
-                "name": "IMAGE_ACTION_ICON_PLUS",
-                "type": "png"
-            },
-            {
-                "file": "images/action_icon_minus.png",
-                "name": "IMAGE_ACTION_ICON_MINUS",
-                "type": "png"
-            },
-            {
-                "file": "images/play.png",
-                "name": "IMAGE_ACTION_ICON_RUN",
-                "type": "png"
-            },
-            {
-                "file": "images/pause.png",
-                "name": "IMAGE_ACTION_ICON_STOP",
-                "type": "png"
-            },
-            {
-                "file": "images/main.png",
-                "name": "IMAGE_MAIN",
+                "file": "images/steps.png",
+                "menuIcon": true,
+                "name": "IMAGE_APP",
                 "type": "png"
             },
             {
@@ -39,9 +20,28 @@
                 "type": "png"
             },
             {
-                "file": "images/steps.png",
-                "menuIcon": true,
-                "name": "IMAGE_APP",
+                "file": "images/main.png",
+                "name": "IMAGE_MAIN",
+                "type": "png"
+            },
+            {
+                "file": "images/pause.png",
+                "name": "IMAGE_ACTION_ICON_STOP",
+                "type": "png"
+            },
+            {
+                "file": "images/play.png",
+                "name": "IMAGE_ACTION_ICON_RUN",
+                "type": "png"
+            },
+            {
+                "file": "images/action_icon_minus.png",
+                "name": "IMAGE_ACTION_ICON_MINUS",
+                "type": "png"
+            },
+            {
+                "file": "images/action_icon_plus.png",
+                "name": "IMAGE_ACTION_ICON_PLUS",
                 "type": "png"
             }
         ]
