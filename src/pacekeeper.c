@@ -11,6 +11,7 @@
 static Window *s_main_window;
 
 static ActionBarLayer *s_action_bar;
+static InverterLayer *s_inverter_layer;
 static TextLayer *s_header_layer, *s_body_layer, *s_double_layer;
 static BitmapLayer *s_steps_layer;
 static GBitmap *s_icon_plus, *s_icon_minus, *s_icon_run, *s_icon_stop;
@@ -125,6 +126,10 @@ static void click_config_provider(void *context) {
 static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
 
+//   s_inverter_layer = inverter_layer_create(GRect(0, 0, 144, 168));
+//   layer_add_child(window_layer, inverter_layer_get_layer(s_inverter_layer));  
+//   layer_set_hidden((Layer *) s_inverter_layer, 0);    
+    
   s_action_bar = action_bar_layer_create();
   action_bar_layer_add_to_window(s_action_bar, window);
   action_bar_layer_set_click_config_provider(s_action_bar, click_config_provider);
@@ -132,25 +137,25 @@ static void main_window_load(Window *window) {
   action_bar_layer_set_icon(s_action_bar, BUTTON_ID_UP, s_icon_plus);
   action_bar_layer_set_icon(s_action_bar, BUTTON_ID_DOWN, s_icon_minus);
   action_bar_layer_set_icon(s_action_bar, BUTTON_ID_SELECT, s_icon_run);
-
-  int width = layer_get_frame(window_layer).size.w - ACTION_BAR_WIDTH - 3;
-
+    
+  int width = layer_get_frame(window_layer).size.w - ACTION_BAR_WIDTH - 4;
+    
   s_header_layer = text_layer_create(GRect(4, 0, width, 30));
   text_layer_set_font(s_header_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
-  text_layer_set_background_color(s_header_layer, GColorClear);
+//  text_layer_set_background_color(s_header_layer, GColorClear);
   text_layer_set_text(s_header_layer, "Strides/minute");
   text_layer_set_text_alignment(s_header_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_header_layer));
 
   s_body_layer = text_layer_create(GRect(4, 44, width, 50));
   text_layer_set_font(s_body_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_LIGHT));
-  text_layer_set_background_color(s_body_layer, GColorClear);
+//  text_layer_set_background_color(s_body_layer, GColorClear);
   text_layer_set_text_alignment(s_body_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_body_layer));
     
   s_double_layer = text_layer_create(GRect(4, 95, width, 30));
   text_layer_set_font(s_double_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-  text_layer_set_background_color(s_double_layer, GColorClear);
+//  text_layer_set_background_color(s_double_layer, GColorClear);
   text_layer_set_text_alignment(s_double_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_double_layer));
     
@@ -170,6 +175,8 @@ static void main_window_unload(Window *window) {
   bitmap_layer_destroy(s_steps_layer);
 
   action_bar_layer_destroy(s_action_bar);
+
+//  inverter_layer_destroy(s_inverter_layer);
 }
 
 static void init() {
