@@ -30,6 +30,12 @@ static bool s_running = false;
 static bool s_main_leg = true; // longer buzz for main leg, shorter for other leg
 static bool s_inverted = true;
 
+static const uint32_t const vibe[] = { 150 };
+VibePattern pattern = {
+  .durations = vibe,
+  .num_segments = ARRAY_LENGTH(vibe),
+};
+
 static void update_text() {
   static char s_text[6];
   static char s_double[6];
@@ -42,13 +48,13 @@ static void update_text() {
 }
 
 static void calc_bzz() {
-    s_step_interval = 60 * 1000 / (s_pace * 2);
+    s_step_interval = 60 * 1000 / s_pace;
     int bzz = s_step_interval;
     int factor = 1;
-    while (bzz*factor < 1000) {
-        factor *= 2;
+    while (bzz*factor < 250) {
+        factor += 1;
     }
-    s_bzz_factor = factor / 2 + 1;
+    s_bzz_factor = factor - 1;
     APP_LOG(APP_LOG_LEVEL_DEBUG, "step interval: %d, bzz_factor: %d", s_step_interval, s_bzz_factor);
 }
 
@@ -59,22 +65,20 @@ static void step_timer_callback(void *data) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "main leg? %d, factor count: %d", s_main_leg, s_bzz_count);
     
     if (s_main_leg) {
-        if (s_bzz_count == 1) {
-            vibes_double_pulse();
+        if (s_bzz_count == 0) {
+            APP_LOG(APP_LOG_LEVEL_DEBUG, "Bzz");
+            vibes_enqueue_custom_pattern(pattern);
         }
         bitmap_layer_set_bitmap(s_steps_layer, s_icon_main);
     } else {
-        if (s_bzz_count == 1) {
-            vibes_short_pulse();
-        }
         bitmap_layer_set_bitmap(s_steps_layer, s_icon_other);
     }
-    
-    s_bzz_count--;
-    if (s_bzz_count == 0) {
+
+    s_bzz_count--;     
+    if (s_bzz_count < 0) {
         s_bzz_count = s_bzz_factor; 
-    }
-    
+    } 
+        
     s_main_leg = !s_main_leg;
     
     if (s_running) {
@@ -212,6 +216,8 @@ static void init() {
 
 static void deinit() {
   // Save the count into persistent storage on app exit
+  vibes_cancel();  
+    
   persist_write_int(PACE_PKEY, s_pace);
   persist_write_bool(INVERT_PKEY, s_inverted);
 
