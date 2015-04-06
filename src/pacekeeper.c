@@ -22,15 +22,13 @@ static GBitmap *s_icon_main, *s_icon_other;
 
 static int s_pace = PACE_DEFAULT;
 
-static int s_bzz_factor = 0;
 static int s_step_interval = 0;
-static int s_bzz_count = 0;
 
 static bool s_running = false;
 static bool s_main_leg = true; // longer buzz for main leg, shorter for other leg
 static bool s_inverted = true;
 
-static const uint32_t const vibe[] = { 150 };
+static const uint32_t const vibe[] = { 100 };
 VibePattern pattern = {
   .durations = vibe,
   .num_segments = ARRAY_LENGTH(vibe),
@@ -48,37 +46,20 @@ static void update_text() {
 }
 
 static void calc_bzz() {
-    s_step_interval = 60 * 1000 / s_pace;
-    int bzz = s_step_interval;
-    int factor = 1;
-    while (bzz*factor < 250) {
-        factor += 1;
-    }
-    s_bzz_factor = factor - 1;
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "step interval: %d, bzz_factor: %d", s_step_interval, s_bzz_factor);
+    s_step_interval = 60 * 1000 / (s_pace * 2);
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "step interval: %d", s_step_interval);
 }
 
 static void start_step_timer();
 
 static void step_timer_callback(void *data) {
-    
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "main leg? %d, factor count: %d", s_main_leg, s_bzz_count);
-    
     if (s_main_leg) {
-        if (s_bzz_count == 0) {
-            APP_LOG(APP_LOG_LEVEL_DEBUG, "Bzz");
-            vibes_enqueue_custom_pattern(pattern);
-        }
+        vibes_enqueue_custom_pattern(pattern);
         bitmap_layer_set_bitmap(s_steps_layer, s_icon_main);
     } else {
         bitmap_layer_set_bitmap(s_steps_layer, s_icon_other);
     }
 
-    s_bzz_count--;     
-    if (s_bzz_count < 0) {
-        s_bzz_count = s_bzz_factor; 
-    } 
-        
     s_main_leg = !s_main_leg;
     
     if (s_running) {
@@ -90,7 +71,6 @@ static void step_timer_callback(void *data) {
 
 static void start_step_timer() {
     s_main_leg = true;
-    s_bzz_count = s_bzz_factor;
     app_timer_register(s_step_interval, step_timer_callback, 0);
 }
 
@@ -105,7 +85,7 @@ static void increment_click_handler(ClickRecognizerRef recognizer, void *context
 
 static void decrement_click_handler(ClickRecognizerRef recognizer, void *context) {
   if (s_pace <= 50) {
-    // Keep the counter at zero
+    // Keep the counter at 50
     return;
   }
 
