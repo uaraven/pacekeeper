@@ -47,13 +47,18 @@ static void update_text() {
 
 static void calc_bzz() {
     s_step_interval = 60 * 1000 / (s_pace * 2);
-    APP_LOG(APP_LOG_LEVEL_DEBUG, "step interval: %d", s_step_interval);
 }
 
 static void start_step_timer();
 
 static void step_timer_callback(void *data) {
-    if (s_main_leg) {
+    if (s_running) {
+        app_timer_register(s_step_interval, step_timer_callback, 0);
+    } else {
+        bitmap_layer_set_bitmap(s_steps_layer, NULL);        
+    }
+    
+    if (s_running && s_main_leg) {
         vibes_enqueue_custom_pattern(pattern);
         bitmap_layer_set_bitmap(s_steps_layer, s_icon_main);
     } else {
@@ -61,12 +66,6 @@ static void step_timer_callback(void *data) {
     }
 
     s_main_leg = !s_main_leg;
-    
-    if (s_running) {
-        app_timer_register(s_step_interval, step_timer_callback, 0);
-    } else {
-        bitmap_layer_set_bitmap(s_steps_layer, NULL);
-    }
 }
 
 static void start_step_timer() {
@@ -195,12 +194,14 @@ static void init() {
 }
 
 static void deinit() {
-  // Save the count into persistent storage on app exit
+  // cancel any vibrations
   vibes_cancel();  
-    
+
+  // save settings
   persist_write_int(PACE_PKEY, s_pace);
   persist_write_bool(INVERT_PKEY, s_inverted);
 
+  // cleanup
   window_destroy(s_main_window);
 
   gbitmap_destroy(s_icon_plus);
